@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>Bienvenue dans l'administration</h1>
+    <p>Utilisez les liens ci-dessous :</p>
+    <ul>
+        <li><a href="{% url 'interface_valider_billet' %}">Scanner un billet</a></li>
+        <li><a href="{% url 'statistiques_ventes' %}">Voir les statistiques de ventes</a></li>
+    </ul>
+    {{ block.super }}
+{% endblock %}

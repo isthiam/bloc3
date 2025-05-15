@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeux Olympiques Paris 2024</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6e6fa; /* Fond mauve pastel */
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 50px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header img {
+            height: 80px;
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+
+        h1 {
+            color: #4b0082;
+        }
+
+        .epreuves {
+            display: inline-block;
+            background: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .epreuves h2 {
+            color: #4b0082;
+            text-align: center;
+        }
+
+        .epreuves ul {
+            list-style: none;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .epreuves li {
+            margin: 8px 0;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .bouton {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background-color: #6a0dad;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .bouton:hover {
+            background-color: #4b0082;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="{% static 'images/logo_paris_2024.png' %}" alt="Logo Paris 2024">
+        <img src="{% static 'images/logo_comite_olympique.png' %}" alt="Logo Comité Olympique">
+    </div>
+
+    <div class="welcome">
+        <h1>Bienvenue sur le site officiel des Jeux Olympiques de Paris 2024</h1>
+        <p>Vivez les plus grandes compétitions sportives avec nous !</p>
+    </div>
+
+    <div style="text-align: center;">
+        <div class="epreuves">
+            <h2>Épreuves majeures à ne pas manquer</h2>
+            <ul>
+                <li>🏃‍♂️ Athlétisme – 100m, Marathon</li>
+                <li>🏊‍♀️ Natation – 50m Nage Libre, Relais 4x100m</li>
+                <li>🏀 Basketball – Tournoi international</li>
+                <li>🤾‍♂️ Handball – Finales hommes & femmes</li>
+                <li>🎾 Tennis – Simple et double</li>
+                <li>🚴‍♂️ Cyclisme – Route & Piste</li>
+                <li>🏋️ Haltérophilie – Toutes catégories</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="actions">
+        {% if user.is_authenticated %}
+            <a href="{% url 'mon_compte' %}" class="bouton">Mon Compte</a>
+            <a href="{% url 'voir_panier' %}" class="bouton">Mon Panier</a>
+            <a href="{% url 'liste_offres' %}" class="bouton">Voir les Offres</a>
+            <a href="{% url 'logout' %}" class="bouton">Se Déconnecter</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="bouton">S'inscrire</a>
+            <a href="{% url 'login' %}" class="bouton">Se Connecter</a>
+            <a href="{% url 'liste_offres' %}" class="bouton">Voir les Offres</a>
+        {% endif %}
+        <a href="{% url 'nous_contacter' %}" class="bouton">Nous Contacter</a>
+        {% if user.is_staff %}
+            <a href="{% url 'statistiques_ventes' %}" class="bouton">Statistiques des Ventes</a>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

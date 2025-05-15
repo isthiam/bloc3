@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Processus de Paiement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6e6fa; /* Fond mauve pastel */
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            margin: 0;
+        }
+
+        .paiement-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #6a0dad;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #4b0082;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="paiement-container">
+        <h2>Processus de Paiement - {{ mode_paiement }}</h2>
+        <ul>
+            {% for offre in offres %}
+                <li>{{ offre.get_nom_display }} - {{ offre.prix }} €</li>
+            {% endfor %}
+        </ul>
+
+        {% if mode_paiement == "Carte Bancaire" %}
+            <form method="post">
+                {% csrf_token %}
+                <p>Numéro de carte :</p>
+                <input type="text" required>
+                <p>Date d'expiration :</p>
+                <input type="text" required>
+                <p>CVV :</p>
+                <input type="text" required>
+                <input type="hidden" name="mode_paiement" value="{{ mode_paiement }}">
+                <button type="submit" name="valider_paiement">Payer par Carte</button>
+            </form>
+
+        {% elif mode_paiement == "PayPal" %}
+            <form method="post">
+                {% csrf_token %}
+                <p>Vous allez être redirigé vers PayPal (simulation).</p>
+                <input type="hidden" name="mode_paiement" value="{{ mode_paiement }}">
+                <button type="submit" name="valider_paiement">Valider avec PayPal</button>
+            </form>
+
+        {% elif mode_paiement == "Virement Bancaire" %}
+            <p>Veuillez effectuer un virement sur ce RIB fictif :</p>
+            <p><strong>FR76 3000 6000 0112 3456 7890 189</strong></p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="mode_paiement" value="{{ mode_paiement }}">
+                <button type="submit" name="valider_paiement">J'ai effectué le virement</button>
+            </form>
+
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <p>Choisissez votre mode de paiement :</p>
+                <label><input type="radio" name="mode_paiement" value="Carte Bancaire" required> Carte Bancaire</label>
+                <label><input type="radio" name="mode_paiement" value="PayPal"> PayPal</label>
+                <label><input type="radio" name="mode_paiement" value="Virement Bancaire"> Virement Bancaire</label>
+                <button type="submit">Continuer</button>
+            </form>
+        {% endif %}
+
+        <a href="{% url 'voir_panier' %}">Retour au panier</a>
+    </div>
+</body>
+</html>

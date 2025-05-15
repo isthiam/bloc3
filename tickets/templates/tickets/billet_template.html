@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .qrcode { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Billet pour {{ reservation.offre.get_nom_display }}</h1>
+    <p>Réservé par : {{ reservation.utilisateur.username }}</p>
+    <p>Statut : {{ reservation.statut }}</p>
+    <div class="qrcode">
+        <img src="{{ reservation.qrcode.url }}" alt="QR Code" width="200">
+    </div>
+</body>
+</html>

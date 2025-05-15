@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Compte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6e6fa;
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            margin: 0;
+        }
+
+        .compte-container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 500px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #6a0dad;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        a.bouton {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 10px 20px;
+            background: #6a0dad;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        a.bouton:hover {
+            background: #4b0082;
+        }
+    </style>
+</head>
+<body>
+    <div class="compte-container">
+        {% if messages %}
+            {% for message in messages %}
+                 <p style="color: green;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+   
+        <h2>Bienvenue, {{ user.username }}</h2>
+
+        <h3>Mes réservations :</h3>
+        {% if reservations %}
+            <ul>
+                {% for reservation in reservations %}
+                    <li>
+                        Offre : {{ reservation.offre.get_nom_display }} | Statut : {{ reservation.statut }}
+                        <br>
+                        <a href="{% url 'telecharger_billet' reservation.id %}" class="bouton">Télécharger le billet</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Vous n'avez pas encore de réservation.</p>
+        {% endif %}
+
+        <div style="margin-top: 20px;">
+            <a href="{% url 'edit_profil' %}" class="bouton">Modifier mes informations</a>
+            <a href="{% url 'voir_panier' %}" class="bouton">Voir Mon Panier</a>
+            <a href="{% url 'liste_offres' %}" class="bouton">Voir les Offres</a>
+            <a href="{% url 'logout' %}" class="bouton">Se Déconnecter</a>
+            
+
+        </div>
+    </div>
+</body>
+</html>

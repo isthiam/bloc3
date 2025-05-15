@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation de Billet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6e6fa;
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4b0082;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function validerQRCode() {
+            const cleFinale = document.getElementById('cle_finale').value;
+
+            fetch('/tickets/valider_qrcode/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: 'cle_finale=' + encodeURIComponent(cleFinale)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = data.message;
+                resultDiv.style.color = data.status === 'valid' ? 'green' : 'red';
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Scanner un Billet</h2>
+        <form onsubmit="event.preventDefault(); validerQRCode();">
+            {% csrf_token %}
+            <input type="text" id="cle_finale" placeholder="Clé finale du billet">
+            <button type="submit">Valider le billet</button>
+        </form>
+        <div id="result"></div>
+    </div>
+</body>
+</html>

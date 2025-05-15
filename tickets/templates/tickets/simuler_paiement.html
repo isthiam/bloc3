@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        form { display: inline-block; margin-top: 20px; }
+        button { padding: 10px 20px; background: green; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Simulation de paiement</h2>
+    <p>Offre : {{ reservation.offre.get_nom_display }} - {{ reservation.offre.prix }} €</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Simuler le Paiement</button>
+    </form>
+</body>
+</html>

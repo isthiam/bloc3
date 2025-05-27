@@ -1,0 +1,23 @@
+app = "bloc3-p5p2vq" # Remplace par le nom de ton app Fly.io
+
+primary_region = "cdg" # Par exemple Paris (cdg), change si besoin
+
+[build]
+  dockerfile = "./Dockerfile"
+
+[env]
+  DJANGO_SECRET_KEY = "votre_cle"
+  DJANGO_DEBUG = "False"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8000
+  processes = ["app"]
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

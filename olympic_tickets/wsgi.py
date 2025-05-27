@@ -10,7 +10,19 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 
 from django.core.wsgi import get_wsgi_application
+from django.contrib import admin
+from django.urls import path, include
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'olympic_tickets.settings')
 
 application = get_wsgi_application()
+
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('users/', include('users.urls')),
+    path('offres/', include('offres.urls')),
+    path('tickets/', include('tickets.urls')),
+]
+

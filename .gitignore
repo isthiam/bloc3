@@ -1,0 +1,54 @@
+# Environnement virtuel
+env/
+env_bloc3/
+.venv/
+
+# Fichiers Python compilés
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Fichiers temporaires
+*.log
+*.pot
+*.pyc
+*.db
+*.sqlite3
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Fichiers sensibles
+.env
+*.secret
+*.pem
+
+# Static files collectés (par collectstatic)
+staticfiles/
+static/
+
+# Dossiers media si générés localement
+media/
+
+# Fichiers/dossiers spécifiques à l’IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Fichiers générés par le système
+.DS_Store
+Thumbs.db
+
+# Fichiers de tests/déploiement
+coverage.xml
+htmlcov/
+*.cover
+*.log
+*.dat
+*.pot
+*.mo
+*.seed
+
+# fichiers Docker optionnels
+*.tar

@@ -1,5 +1,5 @@
 # Image officielle Python
-FROM python:3.12-slim
+FROM python:3.12-slim 
 
 # Définir le dossier de travail
 WORKDIR /app
@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . .
 
 # Installer les dépendances
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt 
 
 # Collecter les fichiers statiques (optionnel si tu as des fichiers statiques)
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 
 # Exposer le port 8000
 EXPOSE 8000

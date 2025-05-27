@@ -5,3 +5,4 @@ Pillow>=9.0
 WeasyPrint>=59.0
 coverage>=7.0
 django-environ>=0.10.0
+python-dotenv>=0.21.0

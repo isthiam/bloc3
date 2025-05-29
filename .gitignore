@@ -1,7 +1,4 @@
-# Environnement virtuel
-env/
-env_bloc3/
-.venv/
+
 
 # Fichiers Python compilés
 __pycache__/
@@ -24,12 +21,8 @@ __pycache__/
 *.secret
 *.pem
 
-# Static files collectés (par collectstatic)
-staticfiles/
-static/
 
-# Dossiers media si générés localement
-media/
+
 
 # Fichiers/dossiers spécifiques à l’IDE
 .vscode/
@@ -52,3 +45,5 @@ htmlcov/
 
 # fichiers Docker optionnels
 *.tar
+
+staticfiles/

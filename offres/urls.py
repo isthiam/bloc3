@@ -1,7 +1,10 @@
 from django.urls import path
+from django.contrib import admin
+
 from . import views
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', views.liste_offres, name='liste_offres'),
     path('<int:offre_id>/', views.detail_offre, name='detail_offre'),
     path('ajouter/<int:offre_id>/', views.ajouter_au_panier, name='ajouter_au_panier'),

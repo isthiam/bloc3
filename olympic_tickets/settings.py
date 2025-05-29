@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,7 +32,7 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True 
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +40,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -99,6 +102,12 @@ DATABASES = {
 
 
 
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+}
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -132,8 +141,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # important
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # important
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -159,3 +174,16 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'Issakha.edu@gmail.com'
 EMAIL_HOST_PASSWORD = 'yejs bzqt iqkx wmxg'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+ALLOWED_HOSTS = [
+    'bloc3-p5p2vq-lingering-snow-8272.fly.dev',
+    '127.0.0.1',
+    'localhost',
+]
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    os.getenv("CSRF_TRUSTED_ORIGINS", "https://bloc3-p5p2vq-lingering-snow-8272.fly.dev")
+]

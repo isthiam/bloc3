@@ -20,12 +20,11 @@ urlpatterns = [
     path('offres/', include('offres.urls')),
     path('tickets/', include('tickets.urls')),
     path('contact/', include('contact.urls')),
-    path('tickets/', include('tickets.urls')),
     path('statistiques/', statistiques_ventes, name='statistiques_ventes'),
 
 
 ]
 
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

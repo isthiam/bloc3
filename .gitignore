@@ -33,15 +33,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Fichiers de tests/déploiement
-coverage.xml
-htmlcov/
-*.cover
-*.log
-*.dat
-*.pot
-*.mo
-*.seed
+
 
 # fichiers Docker optionnels
 *.tar

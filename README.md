@@ -35,6 +35,7 @@ Cette application Django permet aux utilisateurs de consulter et réserver des b
    ```bash
    git clone https://github.com/ton-compte/jo2024-etickets.git
    cd jo2024-etickets
+<<<<<<< HEAD
    ```
 
 2. **Créer un environnement virtuel**
@@ -109,3 +110,5 @@ Ce projet est développé dans le cadre de la formation **Bloc 3 – Studi**. Po
 ## ✍️ Auteur
 
 Issakha Thiam – [LinkedIn](https://www.linkedin.com) – Data Manager & Développeur Python
+=======
+>>>>>>> ebea5e5c705b29bf35eadaebd2cb5b1adc562421

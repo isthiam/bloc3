@@ -19,10 +19,3 @@ application = get_wsgi_application()
 
 
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('offres/', include('offres.urls')),
-    path('tickets/', include('tickets.urls')),
-]
-

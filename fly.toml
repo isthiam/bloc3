@@ -1,32 +1,28 @@
-# fly.toml app configuration file generated for bloc3-p5p2vq-lingering-snow-8272 on 2025-05-27T15:34:19+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
-app = 'bloc3-p5p2vq-lingering-snow-8272'
-primary_region = 'cdg'
+app = "jeuxolympiquesparis2024"
 
 [build]
-  dockerfile = './Dockerfile'
+  builder = "paketobuildpacks/builder:base"
 
 [env]
-  DJANGO_DEBUG = 'False'
-  DJANGO_SECRET_KEY = 'votre_cle'
+  PORT = "8000"
+
+[processes]
+  app = "gunicorn olympic_tickets.wsgi:application --bind 0.0.0.0:8000"
 
 [[services]]
-  protocol = 'tcp'
+  protocol = "tcp"
   internal_port = 8000
-  processes = ['app']
+  processes = ["app"]
 
   [[services.ports]]
     port = 80
-    handlers = ['http']
-
   [[services.ports]]
     port = 443
-    handlers = ['tls', 'http']
 
-[[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+  [[services.checks]]
+    type = "http"
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "10s"
+    method = "get"
+    path = "/"

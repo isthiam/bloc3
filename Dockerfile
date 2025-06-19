@@ -1,22 +1,20 @@
-# Image officielle Python
-FROM python:3.12-slim 
+# Utilise Python officiel (léger)
+FROM python:3.10-slim
 
-# Définir le dossier de travail
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers du projet
+# Copier tout le projet dans le conteneur
 COPY . .
 
 # Installer les dépendances
-RUN pip install --no-cache-dir -r requirements.txt 
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Collecter les fichiers statiques (optionnel si tu as des fichiers statiques)
-RUN python manage.py collectstatic --noinput
+# Collecte les fichiers statiques
+RUN python manage.py collectstatic --noinput || true
 
-# Exposer le port 8000
+# Exposer le port
 EXPOSE 8000
 
-# Commande pour lancer Gunicorn (serveur WSGI de production)
-#RUN python manage.py collectstatic --noinput
-
+# Lancer Gunicorn pour servir l'application Django
 CMD ["gunicorn", "olympic_tickets.wsgi:application", "--bind", "0.0.0.0:8000"]

@@ -9,21 +9,29 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
-from pathlib import Path
-from dotenv import load_dotenv
 import os
 import dj_database_url
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # utile pour le mode local
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
+if DATABASE_URL is None:
+    DATABASE_URL = "postgres://dummy_user:dummy_pass@localhost:5432/db"  # pour éviter le crash en local sans DB
+
+DATABASES = {
+    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / '.env')
+    # BASE_DIR = Path(__file__).resolve().parent.parent
+    # load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'unsafe-secret-key')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
@@ -34,7 +42,9 @@ DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+#ALLOWED_HOSTS = [os.environ.get("bloc3-p5p2vq-lingering-snow-8272") + ".fly.dev"]
+
 
 
 # Application definition
@@ -51,19 +61,14 @@ INSTALLED_APPS = [
     'users',
     'tickets',
     'offres',
-    'contact',
-]
-
-AUTH_USER_MODEL = 'users.CustomUser'
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'contact', 
+    # 'django.middleware.security.SecurityMiddleware',
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # 'django.contrib.messages.middleware.MessageMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'olympic_tickets.urls'
@@ -89,22 +94,34 @@ WSGI_APPLICATION = 'olympic_tickets.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-    }
-}
+
+    # DATABASES = {
+    #     'default': dj_database_url.config(
+    #         default=os.environ.get("DATABASE_URL"),
+    #         conn_max_age=600,
+    #         ssl_require=True
+    #     )
+    # }
 
 
 
-DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-}
+
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': os.getenv('DB_NAME'),
+    #         'USER': os.getenv('DB_USER'),
+    #         'PASSWORD': os.getenv('DB_PASSWORD'),
+    #         'HOST': os.getenv('DB_HOST'),
+    #         'PORT': os.getenv('DB_PORT'),
+    #     }
+    # }
+
+
+
+#DATABASES = {
+#    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+#}
 
 
 
@@ -141,7 +158,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = '/static/'
 
@@ -157,9 +174,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/users/login/'
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 STATIC_URL = '/static/'
@@ -167,13 +186,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'Issakha.edu@gmail.com'
-EMAIL_HOST_PASSWORD = 'yejs bzqt iqkx wmxg'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    # EMAIL_HOST = 'smtp.gmail.com'
+    # EMAIL_PORT = 587
+    # EMAIL_USE_TLS = True
+    # EMAIL_HOST_USER = 'Issakha.edu@gmail.com'
+    # EMAIL_HOST_PASSWORD = 'yejs bzqt iqkx wmxg'
+    # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 ALLOWED_HOSTS = [
@@ -186,4 +205,19 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     os.getenv("CSRF_TRUSTED_ORIGINS", "https://bloc3-p5p2vq-lingering-snow-8272.fly.dev")
+]
+
+
+if os.getenv("DISABLE_COLLECTSTATIC") == "true":
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

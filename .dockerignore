@@ -1,31 +1,3 @@
-# Environnement
-.env
-*.env
-
-# Cache & fichiers système
-__pycache__/
-*.py[cod]
+fly.toml
+.git/
 *.sqlite3
-
-# Répertoires temporaires
-*.log
-*.pot
-*.pyc
-*.pyo
-*.db
-*.tgz
-*.egg-info
-.DS_Store
-.idea/
-.vscode/
-node_modules/
-tmp/
-*.bak
-
-# Dossiers inutiles
-/media/
-/staticfiles/
-/venv/
-.env/
-.mypy_cache/
-coverage/

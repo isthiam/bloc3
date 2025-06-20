@@ -1,20 +1,30 @@
-# Utilise Python officiel (léger)
-FROM python:3.10-slim
+ARG PYTHON_VERSION=3.13-slim
 
-# Définir le répertoire de travail
-WORKDIR /app
+FROM python:${PYTHON_VERSION}
 
-# Copier tout le projet dans le conteneur
-COPY . .
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Installer les dépendances
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# install psycopg2 dependencies.
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Collecte les fichiers statiques
-RUN python manage.py collectstatic --noinput || true
+RUN mkdir -p /code
 
-# Exposer le port
+WORKDIR /code
+
+COPY requirements.txt /tmp/requirements.txt
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+COPY . /code
+
+ENV SECRET_KEY "LsE6oZv4YlY3yy5MrF5Eu1WqCAdHmnwDHoTHsKcQEULs3RQYZZ"
+RUN python manage.py collectstatic --noinput
+
 EXPOSE 8000
 
-# Lancer Gunicorn pour servir l'application Django
-CMD ["gunicorn", "olympic_tickets.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

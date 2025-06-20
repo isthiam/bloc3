@@ -2,20 +2,21 @@
 
 ## 🚀 Description
 
-Cette application Django permet aux utilisateurs de consulter et réserver des billets pour les Jeux Olympiques 2024. Elle intègre un espace administrateur complet, un système de panier, une validation de paiement, un système de QR code pour la validation des billets, ainsi que des statistiques de ventes.
+Cette application Django permet aux utilisateurs de consulter et réserver des billets pour les Jeux Olympiques 2024. Elle propose un espace utilisateur, un back-office administrateur, un panier de commande, un système de paiement simulé, ainsi qu’une génération automatique de billets PDF avec QR Code. Elle inclut également un tableau de bord des ventes et un formulaire de contact.
 
 ---
 
 ## 🧩 Fonctionnalités principales
 
 - 🔐 Authentification et gestion de profil utilisateur
-- 🎫 Réservation de billets (Solo, Duo, Famille)
-- 🛒 Gestion du panier et validation du paiement
-- 📈 Statistiques des ventes (admin)
-- 🧾 Génération de billets PDF avec QR Code
-- ✅ Validation de billets via scan (admin)
-- 📩 Formulaire de contact
-- 🌍 Déploiement Fly.io
+- 👨‍👩‍👧‍👦 Réservation de billets : Solo, Duo, Famille
+- 🛒 Panier d’achat avec confirmation
+- 💳 Paiement (simulation) avec options multiples
+- 📄 Génération automatique de billets PDF avec QR Code
+- ✅ Validation dynamique des billets (scan QR) pour les admins
+- 📈 Tableau de bord statistiques (admin uniquement)
+- 📬 Formulaire de contact
+- 🌐 Application responsive, déployée sur Fly.io
 
 ---
 
@@ -23,8 +24,8 @@ Cette application Django permet aux utilisateurs de consulter et réserver des b
 
 - **Back-end :** Django 5.x
 - **Base de données :** PostgreSQL
-- **Génération PDF :** WeasyPrint / ReportLab
-- **Frontend :** HTML/CSS + Bootstrap
+- **PDF / QR :** WeasyPrint / ReportLab / qrcode
+- **Front-end :** HTML, CSS, Bootstrap
 - **Déploiement :** Docker + Fly.io
 
 ---
@@ -33,16 +34,14 @@ Cette application Django permet aux utilisateurs de consulter et réserver des b
 
 1. **Cloner le dépôt**
    ```bash
-   git clone https://github.com/ton-compte/jo2024-etickets.git
-   cd jo2024-etickets
-<<<<<<< HEAD
+   git clone https://github.com/isthiam/bloc3
    ```
 
 2. **Créer un environnement virtuel**
    ```bash
    python -m venv env
-   source env/bin/activate  # Linux/macOS
-   env\Scripts\activate     # Windows
+   source env/bin/activate        # Linux/macOS
+   env\Scripts\activate           # Windows
    ```
 
 3. **Installer les dépendances**
@@ -50,17 +49,25 @@ Cette application Django permet aux utilisateurs de consulter et réserver des b
    pip install -r requirements.txt
    ```
 
-4. **Créer la base de données**
+4. **Configurer les variables d’environnement**
+   Crée un fichier `.env` avec les paramètres suivants :
+   ```env
+   SECRET_KEY=ta_clé_secrète
+   DEBUG=True
+   DATABASE_URL=postgres://utilisateur:motdepasse@localhost:5432/jo2024
+   ```
+
+5. **Créer et migrer la base de données**
    ```bash
    python manage.py migrate
    ```
 
-5. **Créer un superutilisateur**
+6. **Créer un superutilisateur**
    ```bash
    python manage.py createsuperuser
    ```
 
-6. **Lancer le serveur local**
+7. **Lancer le serveur local**
    ```bash
    python manage.py runserver
    ```
@@ -73,16 +80,24 @@ Cette application Django permet aux utilisateurs de consulter et réserver des b
 python manage.py test
 ```
 
-> ✅ Couverture test visée : 90% – Tests passant : 95%
+_Couverture visée : 90%_
 
 ---
 
-## 📦 Déploiement (Fly.io)
+## 🚀 Déploiement sur Fly.io
 
-```bash
-fly launch
-fly deploy
-```
+1. **Connexion**
+   ```bash
+   fly auth login
+   ```
+
+2. **Création et déploiement**
+   ```bash
+   fly launch --name jeuxolympiqueparis2024 --region cdg
+   fly postgres create --name jeux2024 --region cdg
+   fly postgres attach jeux2024 --app jeuxolympiqueparis2024 --database-user jeuxuser --database-name jeux2024
+   fly deploy
+   ```
 
 ---
 
@@ -90,25 +105,73 @@ fly deploy
 
 ```
 📁 olympic_tickets/
-├── users/              → gestion des utilisateurs
-├── offres/             → gestion des offres de billets
-├── tickets/            → gestion des réservations et QR codes
+├── users/              → gestion des comptes utilisateurs
+├── offres/             → gestion des offres (solo, duo, famille)
+├── tickets/            → réservation, validation, génération de billets
 ├── contact/            → formulaire de contact
-├── templates/          → templates HTML
-├── static/             → fichiers statiques (logos, styles)
-├── media/              → fichiers PDF générés
+├── templates/          → pages HTML (frontend)
+├── static/             → fichiers statiques (CSS, JS, images)
+├── media/              → fichiers générés (PDF billets)
 ```
 
 ---
 
 ## 📄 Licence
 
-Ce projet est développé dans le cadre de la formation **Bloc 3 – Studi**. Pour usage éducatif uniquement.
+Projet réalisé dans le cadre de la formation **Bloc 3 – Studi**. Utilisation à but éducatif uniquement.
 
 ---
 
-## ✍️ Auteur
+## 👤 Auteur
 
-Issakha Thiam – [LinkedIn](https://www.linkedin.com) – Data Manager & Développeur Python
-=======
->>>>>>> ebea5e5c705b29bf35eadaebd2cb5b1adc562421
+**Issakha Thiam**  
+*Data Manager & Développeur Python*  
+📧 [LinkedIn](https://www.linkedin.com)
+
+## 🖥️ Exécution en local
+
+### Prérequis
+
+- Python 3.10+ installé
+- PostgreSQL installé localement ou utilisation de SQLite pour tester rapidement
+- Créer un environnement virtuel :
+
+```bash
+python -m venv env
+source env/bin/activate  # ou env\Scripts\activate sous Windows
+```
+
+- Installer les dépendances :
+
+```bash
+pip install -r requirements.txt
+```
+
+- Configurer un fichier `.env` (facultatif) :
+
+```env
+SECRET_KEY=your_secret_key
+DEBUG=True
+ALLOWED_HOSTS=127.0.0.1,localhost
+DATABASE_URL=sqlite:///db.sqlite3  # ou votre URL PostgreSQL
+```
+
+- Appliquer les migrations :
+
+```bash
+python manage.py migrate
+```
+
+- Créer un superutilisateur :
+
+```bash
+python manage.py createsuperuser
+```
+
+- Lancer le serveur de développement :
+
+```bash
+python manage.py runserver
+```
+
+- Accéder à l'application : [http://127.0.0.1:8000](http://127.0.0.1:8000)
